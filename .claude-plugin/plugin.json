@@ -1,0 +1,58 @@
+{
+  "name": "plugin-eval",
+  "version": "0.1.0",
+  "description": "Three-layer quality evaluation framework for OpenCode plugins",
+  "author": "jarbcs1",
+  "repository": "https://github.com/jarbcs1-prog/opencode-plugin-eval",
+  "license": "MIT",
+  "keywords": ["evaluation", "quality", "plugins", "skills", "benchmarking"],
+  "commands": [
+    {
+      "name": "eval",
+      "description": "Evaluate a plugin or skill for quality",
+      "argumentHint": "<path> [--depth quick|standard]"
+    },
+    {
+      "name": "compare",
+      "description": "Compare two skills head-to-head",
+      "argumentHint": "<skill-a> <skill-b>"
+    },
+    {
+      "name": "certify",
+      "description": "Full quality certification with badge",
+      "argumentHint": "<path>"
+    }
+  ],
+  "agents": [
+    {
+      "name": "eval-orchestrator",
+      "description": "Orchestrates plugin quality evaluation. Use PROACTIVELY when evaluating, scoring or certifying plugin quality."
+    },
+    {
+      "name": "eval-judge",
+      "description": "LLM judge for plugin quality assessment. Scores skills on triggering accuracy, orchestration fitness, output quality and scope calibration using anchored rubrics."
+    }
+  ],
+  "skills": [
+    {
+      "name": "evaluation-methodology",
+      "description": "PluginEval quality methodology — dimensions, rubrics, statistical methods and scoring formulas. Use this skill when understanding how plugin quality is measured, when interpreting a low score on a specific dimension, when deciding how to improve a skill's triggering accuracy or orchestration fitness, when calibrating scoring thresholds for your marketplace or when explaining quality badges to external partners."
+    }
+  ],
+  "entryPoints": {
+    "cli": "plugin_eval.cli:app"
+  },
+  "dependencies": {
+    "python": ">=3.12",
+    "packages": [
+      "pydantic>=2.0",
+      "typer>=0.15",
+      "rich>=13.0",
+      "pyyaml>=6.0"
+    ],
+    "optional": {
+      "llm": ["claude-agent-sdk>=0.1"],
+      "api": ["opencode-ai>=0.1"]
+    }
+  }
+}
