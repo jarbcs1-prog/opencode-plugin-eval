@@ -42,3 +42,4 @@ test-results/
 # Local development
 .env
 .env.local
+.pypirc
