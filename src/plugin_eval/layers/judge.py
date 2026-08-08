@@ -1,14 +1,13 @@
-"""Layer 2: LLM Judge — semantic evaluation via Claude, model-tiered, async."""
+"""Layer 2: LLM Judge — semantic evaluation via OpenCode, model-tiered, async."""
 
 from __future__ import annotations
 
 import asyncio
-import json
-import re
 from dataclasses import dataclass
 from pathlib import Path
 
 from plugin_eval.models import LayerResult
+from plugin_eval.opencode_client import query_llm, _resolve_model
 from plugin_eval.parser import ParsedSkill, parse_skill
 
 # ---------------------------------------------------------------------------
@@ -32,73 +31,6 @@ Score 1.0 — Perfectly calibrated: Minimal surface area, maximum cohesion, idea
 """.strip()
 
 # ---------------------------------------------------------------------------
-# Model resolution
-# ---------------------------------------------------------------------------
-
-_MODEL_MAP: dict[str, str] = {
-    "haiku": "claude-haiku-4-5-20251001",
-    "sonnet": "claude-sonnet-4-6",
-    "opus": "claude-opus-4-6",
-}
-
-
-def _resolve_model(tier: str) -> str:
-    """Map a tier name to a full model ID."""
-    return _MODEL_MAP.get(tier, _MODEL_MAP["sonnet"])
-
-
-# ---------------------------------------------------------------------------
-# LLM query helper (abstracted for testability)
-# ---------------------------------------------------------------------------
-
-
-async def query_llm(prompt: str, system: str = "", model: str = "claude-sonnet-4-6") -> dict:
-    """Call Claude via the Agent SDK and return a parsed JSON dict.
-
-    Raises RuntimeError if claude-agent-sdk is not installed.
-    """
-    try:
-        from claude_agent_sdk import (  # type: ignore[import-untyped]
-            ClaudeAgentOptions,
-            ResultMessage,
-            query,
-        )
-    except ImportError as exc:
-        raise RuntimeError(
-            "claude-agent-sdk is required for LLM judge. Install with: pip install plugin-eval[llm]"
-        ) from exc
-
-    full_prompt = prompt
-    if system:
-        full_prompt = f"{system}\n\n{prompt}"
-
-    result_text = ""
-    async for message in query(
-        prompt=full_prompt,
-        options=ClaudeAgentOptions(
-            model=model,
-            allowed_tools=[],
-        ),
-    ):
-        if isinstance(message, ResultMessage):
-            # ResultMessage contains the final text
-            for block in getattr(message, "content", []):
-                if hasattr(block, "text"):
-                    result_text += block.text
-
-    # Try to parse JSON — handles raw JSON or JSON inside a markdown code block
-    stripped = result_text.strip()
-    fence_match = re.search(r"```(?:json)?\s*([\s\S]+?)\s*```", stripped)
-    if fence_match:
-        stripped = fence_match.group(1).strip()
-
-    try:
-        return json.loads(stripped)
-    except json.JSONDecodeError:
-        return {"raw": result_text, "score": 0.5}
-
-
-# ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
 
@@ -117,7 +49,7 @@ class JudgeConfig:
 
 
 class JudgeAnalyzer:
-    """Semantic skill evaluation using Claude as a judge."""
+    """Semantic skill evaluation using OpenCode as a judge."""
 
     def __init__(self, config: JudgeConfig) -> None:
         self.config = config
@@ -172,7 +104,7 @@ class JudgeAnalyzer:
     # ------------------------------------------------------------------
 
     async def assess_triggering(self, skill: Path | ParsedSkill) -> dict:
-        """Generate 10 synthetic prompts and classify triggering accuracy via Haiku."""
+        """Generate 10 synthetic prompts and classify triggering accuracy via Haiku-tier model."""
         if isinstance(skill, Path):
             skill = parse_skill(skill)
         model = _resolve_model("haiku")
@@ -188,7 +120,7 @@ class JudgeAnalyzer:
 </description>
 
 Generate 10 synthetic user prompts: 5 that SHOULD trigger this skill and 5 that should NOT.
-For each prompt, also predict whether a typical Claude model would trigger this skill.
+For each prompt, also predict whether a typical OpenCode model would trigger this skill.
 
 Return JSON matching this schema:
 {{
@@ -205,7 +137,7 @@ Return JSON matching this schema:
             return await query_llm(prompt, system=system, model=model)
 
     async def assess_orchestration(self, skill: Path | ParsedSkill) -> dict:
-        """Rate orchestration fitness using an anchored rubric via Sonnet."""
+        """Rate orchestration fitness using an anchored rubric via Sonnet-tier model."""
         if isinstance(skill, Path):
             skill = parse_skill(skill)
         model = _resolve_model("sonnet")
@@ -238,7 +170,7 @@ Return JSON:
             return await query_llm(prompt, system=system, model=model)
 
     async def assess_output_quality(self, skill: Path | ParsedSkill) -> dict:
-        """Simulate 3 tasks and judge output quality via Sonnet."""
+        """Simulate 3 tasks and judge output quality via Sonnet-tier model."""
         if isinstance(skill, Path):
             skill = parse_skill(skill)
         model = _resolve_model("sonnet")
@@ -267,7 +199,7 @@ Return JSON:
             return await query_llm(prompt, system=system, model=model)
 
     async def assess_scope(self, skill: Path | ParsedSkill) -> dict:
-        """Evaluate scope calibration using an anchored rubric via Sonnet."""
+        """Evaluate scope calibration using an anchored rubric via Sonnet-tier model."""
         if isinstance(skill, Path):
             skill = parse_skill(skill)
         model = _resolve_model("sonnet")

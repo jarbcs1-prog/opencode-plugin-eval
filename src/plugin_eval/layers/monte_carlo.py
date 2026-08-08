@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from plugin_eval.models import LayerResult
+from plugin_eval.opencode_client import query_llm, _resolve_model
 from plugin_eval.parser import ParsedSkill, parse_skill
 from plugin_eval.stats import (
     bootstrap_ci,
@@ -51,9 +52,11 @@ class MonteCarloConfig:
 
 
 async def run_simulation(skill_content: str, prompt: str, auth: str) -> SimResult:
-    """Run a single simulation via Agent SDK. Returns SimResult. On error, errored=True."""
+    """Run a single simulation via OpenCode CLI. Returns SimResult. On error, errored=True."""
     try:
-        import claude_agent_sdk as sdk  # type: ignore[import-untyped]
+        from plugin_eval.opencode_client import get_client
+
+        client = get_client()
 
         result_text = ""
         activated = False
@@ -63,17 +66,25 @@ async def run_simulation(skill_content: str, prompt: str, auth: str) -> SimResul
 
         start = time.monotonic()
 
-        async for event in sdk.stream(
-            prompt,
+        # Use OpenCode client to run the simulation
+        result = await client.query(
+            prompt=prompt,
             system=f"You are evaluating a skill. Apply the skill if appropriate.\n\n{skill_content}",
-        ):
-            if hasattr(event, "text"):
-                result_text += event.text
-                activated = True
-            if hasattr(event, "usage"):
-                tokens = getattr(event.usage, "total_tokens", 0)
+            model=None,  # Use default model
+        )
 
         duration_ms = int((time.monotonic() - start) * 1000)
+
+        # Extract response text
+        if "raw" in result:
+            result_text = result["raw"]
+        elif "text" in result:
+            result_text = result["text"]
+        else:
+            result_text = str(result)
+
+        activated = bool(result_text.strip())
+        tokens = len(result_text) // 4  # Rough token estimate
 
         # Estimate quality score from response length and coherence heuristic
         quality_score = min(1.0, len(result_text) / 500) if activated else 0.0
@@ -116,7 +127,7 @@ class MonteCarloAnalyzer:
     async def analyze_skill(self, skill_or_dir: Path | ParsedSkill) -> LayerResult:
         """Generate prompts, run N simulations, compute statistics, return LayerResult."""
         skill = skill_or_dir if isinstance(skill_or_dir, ParsedSkill) else parse_skill(skill_or_dir)
-        skill_content = skill.raw_content
+        skill_content = skill.raw_content[:3000]  # Truncate to match judge layer
 
         prompts = await self._generate_prompts(skill.name, skill.description)
 
@@ -173,11 +184,9 @@ class MonteCarloAnalyzer:
     # ------------------------------------------------------------------
 
     async def _generate_prompts(self, name: str, description: str) -> list[str]:
-        """Use Haiku to generate 15 varied prompts. Falls back to basic variants."""
+        """Use Haiku-tier model to generate 15 varied prompts. Falls back to basic variants."""
         try:
-            from plugin_eval.layers.judge import query_llm
-
-            model = "claude-haiku-4-5-20251001"
+            model = _resolve_model("haiku")
             system = (
                 "You are generating test prompts for a OpenCode skill. "
                 "Respond ONLY with a JSON array of strings — no explanation, no markdown fences."

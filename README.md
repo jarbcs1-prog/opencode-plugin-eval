@@ -1,6 +1,6 @@
 # opencode-plugin-eval
 
-Three-layer quality evaluation framework for OpenCode plugins.
+Three-layer quality evaluation framework for OpenCode skills and plugins.
 
 > **Disclaimer:** This plugin is not built by the OpenCode team and is not affiliated with OpenCode in any way. It is an independent community project.
 
