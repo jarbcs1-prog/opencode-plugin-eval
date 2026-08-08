@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from plugin_eval.layers.static import StaticAnalyzer
-from plugin_eval.models import LayerResult
+from opencode_plugin_eval.layers.static import StaticAnalyzer
+from opencode_plugin_eval.models import LayerResult
 
 
 class TestStaticAnalyzer:
@@ -40,6 +40,6 @@ class TestStaticAnalyzer:
 
     def test_description_pushiness_score(self):
         analyzer = StaticAnalyzer()
-        good = "Test skill for evaluation. Use when testing plugin-eval. Use PROACTIVELY for quality checks."
+        good = "Test skill for evaluation. Use when testing opencode-plugin-eval. Use PROACTIVELY for quality checks."
         weak = "A skill."
         assert analyzer._description_pushiness(good) > analyzer._description_pushiness(weak)

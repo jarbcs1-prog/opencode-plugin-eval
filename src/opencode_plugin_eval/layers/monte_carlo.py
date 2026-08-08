@@ -8,10 +8,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
-from plugin_eval.models import LayerResult
-from plugin_eval.opencode_client import query_llm, _resolve_model
-from plugin_eval.parser import ParsedSkill, parse_skill
-from plugin_eval.stats import (
+from opencode_plugin_eval.models import LayerResult
+from opencode_plugin_eval.opencode_client import query_llm, _resolve_model
+from opencode_plugin_eval.parser import ParsedSkill, parse_skill
+from opencode_plugin_eval.stats import (
     bootstrap_ci,
     clopper_pearson_ci,
     coefficient_of_variation,
@@ -54,7 +54,7 @@ class MonteCarloConfig:
 async def run_simulation(skill_content: str, prompt: str, auth: str) -> SimResult:
     """Run a single simulation via OpenCode CLI. Returns SimResult. On error, errored=True."""
     try:
-        from plugin_eval.opencode_client import get_client
+        from opencode_plugin_eval.opencode_client import get_client
 
         client = get_client()
 

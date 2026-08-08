@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from plugin_eval.layers.monte_carlo import MonteCarloAnalyzer, MonteCarloConfig, SimResult
+from opencode_plugin_eval.layers.monte_carlo import MonteCarloAnalyzer, MonteCarloConfig, SimResult
 
 
 class TestSimResult:
@@ -15,11 +15,13 @@ class TestSimResult:
 
 class TestMonteCarloAnalyzer:
     @pytest.mark.asyncio
-    @patch("plugin_eval.layers.monte_carlo.run_simulation")
-    async def test_run_with_mocked_sims(self, mock_sim, sample_skill_dir: Path):
+    @patch("opencode_plugin_eval.layers.monte_carlo.run_simulation")
+    @patch("opencode_plugin_eval.layers.monte_carlo.query_llm")
+    async def test_run_with_mocked_sims(self, mock_query, mock_sim, sample_skill_dir: Path):
         mock_sim.return_value = SimResult(
             activated=True, quality_score=0.82, tokens=2800, duration_ms=1500
         )
+        mock_query.return_value = [f"prompt {i}" for i in range(15)]
         config = MonteCarloConfig(n_runs=10, concurrency=2)
         analyzer = MonteCarloAnalyzer(config)
         result = await analyzer.analyze_skill(sample_skill_dir)

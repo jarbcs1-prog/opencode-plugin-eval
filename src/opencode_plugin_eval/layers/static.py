@@ -5,8 +5,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from plugin_eval.models import AntiPattern, LayerResult
-from plugin_eval.parser import ParsedAgent, ParsedSkill, parse_plugin, parse_skill
+from opencode_plugin_eval.models import AntiPattern, LayerResult
+from opencode_plugin_eval.parser import ParsedAgent, ParsedSkill, parse_plugin, parse_skill
 
 # Weights for skill sub-scores
 _SKILL_WEIGHTS = {

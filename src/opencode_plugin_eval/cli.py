@@ -1,4 +1,4 @@
-"""Typer CLI for plugin-eval."""
+"""Typer CLI for opencode-plugin-eval."""
 
 from __future__ import annotations
 
@@ -7,12 +7,12 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from plugin_eval.engine import EvalEngine
-from plugin_eval.models import Depth, EvalConfig
-from plugin_eval.reporter import Reporter
+from opencode_plugin_eval.engine import EvalEngine
+from opencode_plugin_eval.models import Depth, EvalConfig
+from opencode_plugin_eval.reporter import Reporter
 
 app = typer.Typer(
-    name="plugin-eval",
+    name="opencode-plugin-eval",
     help="Evaluate OpenCode plugins and skills.",
     add_completion=False,
 )
@@ -116,7 +116,7 @@ def certify(
 def init(
     corpus_source: Path = typer.Argument(..., help="Path to plugins directory to index as corpus"),  # noqa: B008
     corpus_dir: Path = typer.Option(  # noqa: B008
-        Path.home() / ".plugineval" / "corpus",  # noqa: B008
+        Path.home() / ".opencode-plugin-eval" / "corpus",  # noqa: B008
         help="Where to store corpus index",  # noqa: B008
     ),
 ) -> None:
@@ -124,7 +124,7 @@ def init(
     if not corpus_source.exists():
         console.print(f"[red]Error: Source path does not exist: {corpus_source}[/red]")
         raise typer.Exit(code=2)
-    from plugin_eval.corpus import Corpus  # lazy import — Task 10
+    from opencode_plugin_eval.corpus import Corpus  # lazy import — Task 10
 
     corpus = Corpus.init_from_source(corpus_source, corpus_dir)
     console.print(f"[green]Corpus initialized with {corpus.size} skills at {corpus_dir}[/green]")

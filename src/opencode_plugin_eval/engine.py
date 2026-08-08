@@ -6,8 +6,8 @@ import asyncio
 from datetime import UTC, datetime
 from pathlib import Path
 
-from plugin_eval.layers.static import StaticAnalyzer, anti_pattern_penalty
-from plugin_eval.models import (
+from opencode_plugin_eval.layers.static import StaticAnalyzer, anti_pattern_penalty
+from opencode_plugin_eval.models import (
     Badge,
     CompositeResult,
     Depth,
@@ -16,7 +16,7 @@ from plugin_eval.models import (
     LayerResult,
     PluginEvalResult,
 )
-from plugin_eval.parser import ParsedSkill, parse_skill
+from opencode_plugin_eval.parser import ParsedSkill, parse_skill
 
 # Top-level dimension weights (must sum to 1.0)
 DIMENSION_WEIGHTS: dict[str, float] = {
@@ -79,7 +79,7 @@ class EvalEngine:
 
         # Layer 2: Judge (standard+ depth)
         if self.config.depth in (Depth.STANDARD, Depth.DEEP, Depth.THOROUGH):
-            from plugin_eval.layers.judge import JudgeAnalyzer, JudgeConfig
+            from opencode_plugin_eval.layers.judge import JudgeAnalyzer, JudgeConfig
 
             judge_config = JudgeConfig(
                 judges=self.config.judges,
@@ -90,7 +90,7 @@ class EvalEngine:
 
             # Layer 3: Monte Carlo (deep+ depth) — run together with judge when both active
             if self.config.depth in (Depth.DEEP, Depth.THOROUGH):
-                from plugin_eval.layers.monte_carlo import MonteCarloAnalyzer, MonteCarloConfig
+                from opencode_plugin_eval.layers.monte_carlo import MonteCarloAnalyzer, MonteCarloConfig
 
                 n_runs = self.config.monte_carlo_n or (
                     100 if self.config.depth == Depth.THOROUGH else 50

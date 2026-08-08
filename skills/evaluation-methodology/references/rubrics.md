@@ -429,7 +429,7 @@ Low kappa on a specific dimension points to the area needing clarification. Low 
 
 ### Calibration Corpus
 
-The gold corpus (initialized via `plugin-eval init`) provides Platinum and Gold-badged skills as calibration anchors. Before running a batch evaluation, compare your expected scores against one or two corpus entries to verify your judge is calibrated correctly.
+The gold corpus (initialized via `opencode-plugin-eval init`) provides Platinum and Gold-badged skills as calibration anchors. Before running a batch evaluation, compare your expected scores against one or two corpus entries to verify your judge is calibrated correctly.
 
 If your judge consistently scores a known Platinum skill below 85 on any dimension, check for model version drift or prompt injection in the skill content that may be confusing the judge.
 

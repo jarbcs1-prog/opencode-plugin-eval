@@ -18,7 +18,7 @@ When asked to evaluate a plugin or skill:
 
 ```bash
 cd "${OPENCODE_PLUGIN_ROOT}"
-uv run plugin-eval score <path> --depth quick --output json
+uv run opencode-plugin-eval score <path> --depth quick --output json
 ```
 
 This returns JSON with Layer 1 results. Parse the `composite.score` and `composite.dimensions` array.
@@ -62,4 +62,4 @@ Final score = Σ(dimension_weight × blended_score) × 100 × anti_pattern_penal
 ## Interpreting Results
 
 Focus recommendations on the lowest-scoring dimensions and any detected anti-patterns.
-Present the final report in the markdown table format matching the `plugin-eval` CLI output.
+Present the final report in the markdown table format matching the `opencode-plugin-eval` CLI output.

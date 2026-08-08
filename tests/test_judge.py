@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from plugin_eval.layers.judge import JudgeAnalyzer, JudgeConfig
+from opencode_plugin_eval.layers.judge import JudgeAnalyzer, JudgeConfig
 
 
 class TestJudgeConfig:
@@ -15,7 +15,7 @@ class TestJudgeConfig:
 
 class TestJudgeAnalyzer:
     @pytest.mark.asyncio
-    @patch("plugin_eval.layers.judge.query_llm")
+    @patch("opencode_plugin_eval.layers.judge.query_llm")
     async def test_assess_triggering(self, mock_query, sample_skill_dir: Path):
         mock_query.return_value = {
             "predictions": [
@@ -32,7 +32,7 @@ class TestJudgeAnalyzer:
         mock_query.assert_called()
 
     @pytest.mark.asyncio
-    @patch("plugin_eval.layers.judge.query_llm")
+    @patch("opencode_plugin_eval.layers.judge.query_llm")
     async def test_assess_orchestration(self, mock_query, sample_skill_dir: Path):
         mock_query.return_value = {
             "score": 0.82,
@@ -44,7 +44,7 @@ class TestJudgeAnalyzer:
         assert result["score"] == 0.82
 
     @pytest.mark.asyncio
-    @patch("plugin_eval.layers.judge.query_llm")
+    @patch("opencode_plugin_eval.layers.judge.query_llm")
     async def test_full_analysis(self, mock_query, sample_skill_dir: Path):
         mock_query.side_effect = [
             {"f1": 0.85, "precision": 0.90, "recall": 0.80, "predictions": []},

@@ -1,6 +1,6 @@
 import pytest
 
-from plugin_eval.stats import (
+from opencode_plugin_eval.stats import (
     bootstrap_ci,
     clopper_pearson_ci,
     cohens_kappa,

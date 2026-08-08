@@ -1,5 +1,5 @@
 {
-  "name": "plugin-eval",
+  "name": "opencode-plugin-eval",
   "version": "0.1.0",
   "description": "Three-layer quality evaluation framework for OpenCode plugins",
   "author": "jarbcs1",
@@ -40,7 +40,7 @@
     }
   ],
   "entryPoints": {
-    "cli": "plugin_eval.cli:app"
+    "cli": "opencode_plugin_eval.cli:app"
   },
   "dependencies": {
     "python": ">=3.12",

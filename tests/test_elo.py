@@ -1,6 +1,6 @@
 import pytest
 
-from plugin_eval.elo import EloCalculator
+from opencode_plugin_eval.elo import EloCalculator
 
 
 class TestEloCalculator:

@@ -2,7 +2,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from plugin_eval.cli import app
+from opencode_plugin_eval.cli import app
 
 runner = CliRunner()
 

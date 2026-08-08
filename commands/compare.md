@@ -8,6 +8,6 @@ Run a pairwise comparison between two skills and report which is better on each 
 ## Running
 
 ```bash
-cd plugins/plugin-eval
-uv run plugin-eval compare {argument}
+cd plugins/opencode-plugin-eval
+uv run opencode-plugin-eval compare {argument}
 ```

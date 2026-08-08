@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from plugin_eval.models import (
+from opencode_plugin_eval.models import (
     AntiPattern,
     Badge,
     CompositeResult,

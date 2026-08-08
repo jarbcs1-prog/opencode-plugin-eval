@@ -2,14 +2,14 @@ from pathlib import Path
 
 import pytest
 
-from plugin_eval.parser import ParsedSkill, ParsedAgent, ParsedPlugin, parse_skill, parse_agent, parse_plugin
+from opencode_plugin_eval.parser import ParsedSkill, ParsedAgent, ParsedPlugin, parse_skill, parse_agent, parse_plugin
 
 
 class TestParseSkill:
     def test_parse_valid_skill(self, sample_skill_dir: Path):
         skill = parse_skill(sample_skill_dir)
         assert skill.name == "test-skill"
-        assert "testing plugin-eval" in skill.description
+        assert "testing opencode-plugin-eval" in skill.description
         assert skill.line_count > 0
         assert skill.h2_count >= 2
         assert skill.code_block_count >= 1

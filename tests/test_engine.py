@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from plugin_eval.engine import EvalEngine
-from plugin_eval.models import Depth, EvalConfig, PluginEvalResult
+from opencode_plugin_eval.engine import EvalEngine
+from opencode_plugin_eval.models import Depth, EvalConfig, PluginEvalResult
 
 
 class TestEvalEngine:

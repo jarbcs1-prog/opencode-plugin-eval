@@ -16,7 +16,7 @@ Run the PluginEval quality evaluation on a plugin or skill directory.
 
 ```bash
 cd "${OPENCODE_PLUGIN_ROOT}"
-uv run plugin-eval score {argument} --depth quick --output json
+uv run opencode-plugin-eval score {argument} --depth quick --output json
 ```
 
 Parse the JSON output to get `composite.score`, `composite.dimensions` and `layers[0].anti_patterns`.

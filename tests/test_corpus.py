@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from plugin_eval.corpus import Corpus
+from opencode_plugin_eval.corpus import Corpus
 
 
 class TestCorpus:

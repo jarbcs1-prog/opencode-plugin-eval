@@ -1,5 +1,5 @@
 """
-OpenCode Model Client for plugin-eval.
+OpenCode Model Client for opencode-plugin-eval.
 
 Replaces Anthropic's claude_agent_sdk with OpenCode CLI subprocess calls.
 Uses OpenCode's model routing (Zen API free models or local llama-server).

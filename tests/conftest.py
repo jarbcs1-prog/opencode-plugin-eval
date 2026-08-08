@@ -17,7 +17,7 @@ def sample_skill_dir(tmp_path: Path) -> Path:
     skill_md.write_text(
         "---\n"
         "name: test-skill\n"
-        'description: "Test skill for evaluation. Use when testing plugin-eval."\n'
+        'description: "Test skill for evaluation. Use when testing opencode-plugin-eval."\n'
         "---\n\n"
         "# Test Skill\n\n"
         "## Overview\n\n"

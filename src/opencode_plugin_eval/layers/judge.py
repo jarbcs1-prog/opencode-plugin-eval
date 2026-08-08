@@ -6,9 +6,9 @@ import asyncio
 from dataclasses import dataclass
 from pathlib import Path
 
-from plugin_eval.models import LayerResult
-from plugin_eval.opencode_client import query_llm, _resolve_model
-from plugin_eval.parser import ParsedSkill, parse_skill
+from opencode_plugin_eval.models import LayerResult
+from opencode_plugin_eval.opencode_client import query_llm, _resolve_model
+from opencode_plugin_eval.parser import ParsedSkill, parse_skill
 
 # ---------------------------------------------------------------------------
 # Anchored rubrics

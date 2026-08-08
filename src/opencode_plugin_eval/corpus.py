@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from plugin_eval.parser import parse_skill
+from opencode_plugin_eval.parser import parse_skill
 
 
 @dataclass

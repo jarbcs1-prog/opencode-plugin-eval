@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from plugin_eval.models import PluginEvalResult
+from opencode_plugin_eval.models import PluginEvalResult
 
 
 class Reporter:

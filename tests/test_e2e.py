@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from plugin_eval.engine import EvalEngine
-from plugin_eval.models import Depth, EvalConfig
+from opencode_plugin_eval.engine import EvalEngine
+from opencode_plugin_eval.models import Depth, EvalConfig
 
-REPO_ROOT = Path(__file__).parent.parent.parent.parent  # plugins/plugin-eval/tests -> claude-agents
+REPO_ROOT = Path(__file__).parent.parent.parent.parent  # plugins/opencode-plugin-eval/tests -> claude-agents
 
 
 @pytest.mark.skipif(

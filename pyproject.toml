@@ -1,6 +1,6 @@
 [project]
-name = "plugin-eval"
-version = "0.1.2"
+name = "opencode-plugin-eval"
+version = "0.1.3"
 description = "Three-layer quality evaluation framework for OpenCode plugins"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -26,14 +26,14 @@ dev = [
 ]
 
 [project.scripts]
-plugin-eval = "plugin_eval.cli:app"
+opencode-plugin-eval = "opencode_plugin_eval.cli:app"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/plugin_eval"]
+packages = ["src/opencode_plugin_eval"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [

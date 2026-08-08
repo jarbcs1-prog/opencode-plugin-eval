@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
 
-from plugin_eval.engine import EvalEngine
-from plugin_eval.models import Depth, EvalConfig
-from plugin_eval.reporter import Reporter
+from opencode_plugin_eval.engine import EvalEngine
+from opencode_plugin_eval.models import Depth, EvalConfig
+from opencode_plugin_eval.reporter import Reporter
 
 
 class TestReporter:

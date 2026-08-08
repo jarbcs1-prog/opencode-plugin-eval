@@ -20,7 +20,7 @@ pip install -e .
 
 ### Development install with LLM judge support
 ```bash
-pip install -e "git+https://github.com/jarbcs1-prog/opencode-plugin-eval.git#egg=plugin-eval[llm]"
+pip install -e "git+https://github.com/jarbcs1-prog/opencode-plugin-eval.git#egg=opencode-plugin-eval[llm]"
 ```
 
 Or from source:
@@ -34,19 +34,19 @@ pip install -e ".[llm]"
 
 ```bash
 # Evaluate a skill (static only, instant)
-plugin-eval score path/to/skill --depth quick
+opencode-plugin-eval score path/to/skill --depth quick
 
 # Evaluate with LLM judge (~30s)
-plugin-eval score path/to/skill --depth standard
+opencode-plugin-eval score path/to/skill --depth standard
 
 # Full certification (all layers, ~2-5 min)
-plugin-eval certify path/to/skill
+opencode-plugin-eval certify path/to/skill
 
 # Head-to-head comparison
-plugin-eval compare path/to/skill-a path/to/skill-b
+opencode-plugin-eval compare path/to/skill-a path/to/skill-b
 
 # Initialize corpus for Elo ranking
-plugin-eval init path/to/plugins
+opencode-plugin-eval init path/to/plugins
 ```
 
 ## OpenCode Commands
@@ -55,10 +55,10 @@ After installing, use these commands directly in OpenCode:
 
 | CLI | OpenCode | Description |
 | --- | -------- | ----------- |
-| `plugin-eval score` | `/eval` | Score a plugin or skill |
-| `plugin-eval certify` | `/certify` | Full certification with badge |
-| `plugin-eval compare` | `/compare` | Head-to-head comparison |
-| `plugin-eval init` | — | Build corpus for Elo ranking |
+| `opencode-plugin-eval score` | `/eval` | Score a plugin or skill |
+| `opencode-plugin-eval certify` | `/certify` | Full certification with badge |
+| `opencode-plugin-eval compare` | `/compare` | Head-to-head comparison |
+| `opencode-plugin-eval init` | — | Build corpus for Elo ranking |
 
 ## Layers
 
@@ -68,4 +68,4 @@ After installing, use these commands directly in OpenCode:
 
 ## Documentation
 
-See **[docs/plugin-eval.md](../../docs/plugin-eval.md)** for the full reference: layers, dimensions, scoring formula, anti-patterns, statistical methods and project structure.
+See **[docs/opencode-plugin-eval.md](../../docs/opencode-plugin-eval.md)** for the full reference: layers, dimensions, scoring formula, anti-patterns, statistical methods and project structure.

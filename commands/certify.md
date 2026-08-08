@@ -8,6 +8,6 @@ Run the complete PluginEval certification pipeline (all three layers + Elo ranki
 ## Running
 
 ```bash
-cd plugins/plugin-eval
-uv run plugin-eval certify {argument} --output markdown
+cd plugins/opencode-plugin-eval
+uv run opencode-plugin-eval certify {argument} --output markdown
 ```

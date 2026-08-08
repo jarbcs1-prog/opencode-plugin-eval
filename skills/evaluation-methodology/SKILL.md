@@ -255,10 +255,10 @@ where `actual_score` is 1.0 for a win, 0.5 for a draw, 0.0 for a loss.
 **Corpus percentile** reflects pairwise win rate against the gold corpus.
 **Position bias check:** Pairs are evaluated in both orders; disagreements are flagged.
 
-The `plugin-eval init` command builds the corpus index from a plugins directory:
+The `opencode-plugin-eval init` command builds the corpus index from a plugins directory:
 
 ```bash
-plugin-eval init ./plugins --corpus-dir ~/.plugineval/corpus
+opencode-plugin-eval init ./plugins --corpus-dir ~/.opencode-plugin-eval/corpus
 ```
 
 ---
@@ -268,7 +268,7 @@ plugin-eval init ./plugins --corpus-dir ~/.plugineval/corpus
 ### Score a skill (quick static analysis only)
 
 ```bash
-plugin-eval score ./path/to/skill --depth quick
+opencode-plugin-eval score ./path/to/skill --depth quick
 ```
 
 Returns Layer 1 results in < 2 seconds. Useful for fast feedback during authoring.
@@ -276,7 +276,7 @@ Returns Layer 1 results in < 2 seconds. Useful for fast feedback during authorin
 ### Score with LLM judge (default)
 
 ```bash
-plugin-eval score ./path/to/skill
+opencode-plugin-eval score ./path/to/skill
 ```
 
 Runs static + LLM judge (standard depth). Takes 30–90 seconds.
@@ -284,20 +284,20 @@ Runs static + LLM judge (standard depth). Takes 30–90 seconds.
 ### Score with full output as JSON
 
 ```bash
-plugin-eval score ./path/to/skill --output json
+opencode-plugin-eval score ./path/to/skill --output json
 ```
 
 Emits structured JSON including `composite.score`, `composite.dimensions` and `layers[0].anti_patterns`. Suitable for CI integration:
 
 ```bash
-plugin-eval score ./path/to/skill --depth quick --output json --threshold 70
+opencode-plugin-eval score ./path/to/skill --depth quick --output json --threshold 70
 # exits with code 1 if score < 70
 ```
 
 ### Full certification (all three layers + Elo)
 
 ```bash
-plugin-eval certify ./path/to/skill
+opencode-plugin-eval certify ./path/to/skill
 ```
 
 Runs static + LLM judge + Monte Carlo (50 simulations) + Elo ranking. Takes 15–20 minutes. Assigns a quality badge. Use before publishing a skill to the marketplace.
@@ -305,7 +305,7 @@ Runs static + LLM judge + Monte Carlo (50 simulations) + Elo ranking. Takes 15�
 ### Head-to-head comparison
 
 ```bash
-plugin-eval compare ./skill-a ./skill-b
+opencode-plugin-eval compare ./skill-a ./skill-b
 ```
 
 Evaluates both skills at quick depth and prints a dimension-by-dimension comparison table. Useful for deciding between two implementations or measuring improvement before/after a rewrite.
@@ -313,10 +313,10 @@ Evaluates both skills at quick depth and prints a dimension-by-dimension compari
 ### Initialize corpus for Elo
 
 ```bash
-plugin-eval init ./plugins
+opencode-plugin-eval init ./plugins
 ```
 
-Builds the local corpus index at `~/.plugineval/corpus`. Required before Elo ranking works.
+Builds the local corpus index at `~/.opencode-plugin-eval/corpus`. Required before Elo ranking works.
 
 ### Scripting the Composite Formula
 
@@ -372,7 +372,7 @@ Top-level shape of `--output json`:
 Parse `composite.score` in CI to gate deployments:
 
 ```bash
-score=$(plugin-eval score ./my-skill --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['composite']['score'])")
+score=$(opencode-plugin-eval score ./my-skill --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['composite']['score'])")
 if (( $(echo "$score < 70" | bc -l) )); then
   echo "Quality gate failed: score $score < 70"
   exit 1
